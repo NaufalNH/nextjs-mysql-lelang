@@ -56,18 +56,21 @@ const List2  = () => {
 }
 
 
-// const List = {
-//   masyarakat : List1,
-//   admin : List2
-// }
+const List = {
+  masyarakat : List1,
+  petugas : List2,
+  admin : List3
+}
 
 export const Listsidebar = () =>{
   const [user, setUser] = useState();
+  const [View, setView] = useState('');
   const router = useRouter()
   useEffect(() => {
       const localuser = localStorage.getItem("user");
       const user = JSON.parse(localuser)
       setUser(user)
+      setView(List[user?.level])
   },[])
 
 // const ViewList = List[user?.level]
@@ -78,9 +81,8 @@ export const Listsidebar = () =>{
     <ListSubheader sx={{backgroundColor: "#213555", color: "white"}} component="h4"  >
       Main Menu
     </ListSubheader>
-    {user?.level === "admin" ? <List3 />  :  user?.level === "petugas" ? <List2 /> : <List1 /> }
-    {/* <List1 /> */}
-    {/* <ViewList /> */}
+    {/* {user?.level === "admin" ? <List3 />  :  user?.level === "petugas" ? <List2 /> : <List1 /> } */}
+    {View}
       </React.Fragment>
 )
 }

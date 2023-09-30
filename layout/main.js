@@ -287,18 +287,11 @@ function AlertLogout() {
     }
     
      }
-      
-  //  localStorage.removeItem("user");
-  //  router.replace("/")
     } catch (error) {
       console.log(error)
     }
       
   };
-  // const handleLogout = async () => {
-  //   localStorage.removeItem("user");
-  //  router.replace("/")
-  // }
 
   return (
     <>

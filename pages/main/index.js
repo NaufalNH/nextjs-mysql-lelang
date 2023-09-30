@@ -57,6 +57,9 @@ export  function Lelang() {
           <Typography variant="body2" color="text.secondary">
           Harga: <strong>Rp. 2.000.000</strong>
         </Typography>
+          <Typography variant="body2" color="text.secondary">
+          Status: <strong className='text-green-700'>Dibuka</strong>
+        </Typography>
       </CardContent>
           <CardActions>
       <Button size="small">Offer</Button>
@@ -84,6 +87,9 @@ export  function Lelang() {
         </Typography>
           <Typography variant="body2" color="text.secondary">
           Harga: <strong>Rp. 2.000.000</strong>
+        </Typography>
+          <Typography variant="body2" color="text.secondary">
+          Status: <strong className='text-green-700'>Dibuka</strong>
         </Typography>
       </CardContent>
           <CardActions>
