@@ -4,13 +4,16 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+// import bg from "../public/assets/images/"
 
 const Home = () => {
   const router = useRouter()
   const [data, setData] = useState({
-    method:"login",
+    method:"register",
+    nama:"",
     username:"",
     password:"",
+    telp:"",
   })
 
   const handleChange = (event) => {
@@ -18,39 +21,24 @@ const Home = () => {
       setData({ ...data, [name]: value });
   };
 
-  const handleClick = async (event) => {
-    try {
-     const login = await axios({
-        method:"POST",
-        url:"/api/user",
-        data: data
-      })
-
-      if (login.data) {
-        router.replace("/main")
-        const datauser = login.data
-        localStorage.setItem("user", JSON.stringify(datauser) )
-      } 
-      // else {
-      //   console.log("Invalid Login")
-      // }
-      
-    } catch (error) {
-      console.log(error)
-    }
-  
+const handleClick = async (event) => {
+  try {
+    await axios({
+      method:"POST",
+      url:"/api/user",
+      data: data
+    })
+    router.push("/")
+  } catch (error) {
+    console.log(error)
   }
-  
-  useEffect(() => {
-if(localStorage.getItem("user")){
-router.replace("/main")
+
 }
-  },[])
-  
+
   return (
     <>
       <Head>
-        <title>Pelelangan Online</title>
+        <title>Aplikasi Pengaduan Masyarakat</title>
         <meta name="description" content="Naufal Nur Hanafi" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -65,25 +53,36 @@ router.replace("/main")
                     <div className='flex justify-center'>
                   <Image src={"/assets/images/logo.png"}  alt="logo" width={100} height={100} className="mb-5" />
                   </div>
-                    <div className="w-full">
-                      <label className="text-black/80 text-[16px] font-bold">Username</label>
-                      <input name='username' value={data?.username} onChange={handleChange} className="mt-2 bg-[#5E5E5E] focus-visible:outline-none text-white/70 w-full border border-white/50 rounded-[5px] px-3 py-2 text-base" />
+                  <div className='flex flex-row flex-wrap gap-4'>
+                    <div className="w-[150px]">
+                      <label className="text-black/80 text-[16px] font-bold">Nama</label>
+                      <input name='nama' value={data?.nama} onChange={handleChange} className="mt-2 bg-[#5E5E5E] focus-visible:outline-none text-white/70 w-full border border-white/50 rounded-[5px] px-3 py-2 text-base" />
                     </div>
     
     
+                    <div className="w-[150px]">
+                      <label className="text-black/80 text-[16px] font-bold">Username</label>
+                      <input name='username' value={data?.username} onChange={handleChange} className="mt-2 bg-[#5E5E5E] focus-visible:outline-none text-white/70 w-full border border-white/50 rounded-[5px] px-3 py-2 text-base"></input>
+                    </div>
+                    </div>
                     <div className="w-full my-2">
                       <label className="text-black/80 text-[16px] font-bold">Password</label>
                       <input type='password' name='password' value={data?.password} onChange={handleChange} className="mt-2 bg-[#5E5E5E] focus-visible:outline-none text-white/70 w-full border border-white/50 rounded-[5px] px-3 py-2 text-base"></input>
                     </div>
-    
+                    <div className="w-full my-2">
+                      <label className="text-black/80 text-[16px] font-bold">No. Telepon</label>
+                      <input name='telp' value={data?.telp} onChange={handleChange} className="mt-2 bg-[#5E5E5E] focus-visible:outline-none text-white/70 w-full border border-white/50 rounded-[5px] px-3 py-2 text-base"></input>
+                    </div>
+                    
                     <div className=" mt-3 mb-2">
                       <span className="text-sm text-black font-semibold">
-                        <Link href={"/register"}>Belum Punya Akun?</Link>
+                        <Link href={"/"}>Kembali ke login?</Link>
                       </span>
                     </div>
     
+    
                     <div className="flex justify-center">
-                      <button onClick={handleClick} type="submit" className="bg-[#12486B] text-base hover:opacity-90 active:scale-105 transition text-white px-10 py-1 rounded-md font-bold items-center justify-center flex">Login</button>
+                      <button type="submit" onClick={handleClick} className="bg-[#12486B] text-base hover:opacity-90 active:scale-105 transition text-white px-10 py-1 rounded-md font-bold flex items-center justify-center">Daftar</button>
     
                     </div>
     
