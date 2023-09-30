@@ -25,25 +25,25 @@ if (req.method === "POST") {
                     res.status(401).json({response:"User Not Found"})
                 }   
         }     
-        // if (req.body.method === "user") {
-        //         if(req.body.token){
-        //     const select = await sqlconnect({
-        //         query: "SELECT `level` FROM user WHERE `token` = ?  ",
-        //         values: [req.body.token],
-        //     });
-        //     if (select[0]?.level === "admin") {
-        //         const hasil = await sqlconnect({
-        //             query: "SELECT `nama`, `nik`,`username`, `level`, `telp`  FROM user WHERE `level` = ? OR `level` = ?",
-        //             values: ["masyarakat", "petugas"],
-        //         });
-        //         res.status(200).json({hasil})
-        //     }else{
-        //         res.status(401).json({response:"Unauthorized"})
-        //     }
-        //         }else{
-        //             res.status(401).json({response:"Unauthorized"})
-        //         } 
-        // }
+        if (req.body.method === "get") {
+                if(req.body.token){
+            const select = await sqlconnect({
+                query: "SELECT `level` FROM user WHERE `token` = ?  ",
+                values: [req.body.token],
+            });
+            if (select[0]?.level === "admin") {
+                const hasil = await sqlconnect({
+                    query: "SELECT `nama`, `username`, `level`, `telp`  FROM user WHERE `level` = ? OR `level` = ?",
+                    values: ["masyarakat", "petugas"],
+                });
+                res.status(200).json({hasil})
+            }else{
+                res.status(401).json({response:"Unauthorized"})
+            }
+                }else{
+                    res.status(401).json({response:"Unauthorized"})
+                } 
+        }
         if (req.body.method === "logout") {
             const send = await sqlconnect({
                 query: "UPDATE `user` SET `token`= ? WHERE `username`= ?",
