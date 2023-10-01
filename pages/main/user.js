@@ -7,6 +7,27 @@ import Link from "next/link";
 
 function Upgrade(params) {
 const [open, setOpen] = useState(false);
+const router = useRouter();
+
+const handleClik = async () => {
+    try {
+       const send = await axios({
+            method:"POST",
+            url:"/api/user",
+            data:{
+                method:"up",
+                username: params?.username,
+                token: params?.token
+            }
+        })
+if (send.data.response) {
+    setOpen(false)
+    router.reload();
+}
+    } catch (error) {
+        
+    }
+}
     return(
         <>
         <Button color="success" variant="contained" size="small" onClick={() => {setOpen(true)}}><ArrowUpward /></Button>
@@ -19,12 +40,12 @@ const [open, setOpen] = useState(false);
       >
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Naikkan {params?.nama} menjadi Petugas?
+            Naikkan <strong>{params?.nama}</strong> menjadi Petugas?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => {setOpen(false)}}>Batal</Button>
-          <Button onClick={() => {setOpen(false)}}>Ya</Button>
+          <Button onClick={handleClik}>Ya</Button>
         </DialogActions>
       </Dialog>
       </>
@@ -34,7 +55,6 @@ const [open, setOpen] = useState(false);
 const Userpage =  () => {
     const [user, setUser] = useState();
     const [data, setData] = useState([]);
-    const [page, setPage] = useState(1);
 
     const router = useRouter();
 useEffect(() => {
@@ -111,8 +131,8 @@ useEffect(() => {
                 {index + 1}
               </td>
               <td class="">
-              <Avatar sx={{ bgcolor: "red" }} aria-label="recipe">
-            {data?.username}
+              <Avatar sx={{ bgcolor: "indigo" }} aria-label="recipe">
+            {data?.username ? String(data?.username).charAt(0).toUpperCase() : "?"}
           </Avatar>
               </td>
               <td class="pl-6 py-4">
@@ -139,7 +159,7 @@ useEffect(() => {
                 </td>
                 <td class=" pl-6 py-4">
                     <div className="gap-2 flex">
-                   <Upgrade nama={data?.nama} />
+                   <Upgrade nama={data?.nama} token={user?.token} username={data?.username} />
                     <Button color="error" variant="contained" size="small"><Delete /></Button>
                     </div>
                 </td>

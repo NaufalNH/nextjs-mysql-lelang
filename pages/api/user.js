@@ -44,6 +44,25 @@ if (req.method === "POST") {
                     res.status(401).json({response:"Unauthorized"})
                 } 
         }
+        if (req.body.method === "up") {
+                if(req.body.token){
+            const select = await sqlconnect({
+                query: "SELECT `level` FROM user WHERE `token` = ?  ",
+                values: [req.body.token],
+            });
+            if (select[0]?.level === "admin") {
+                const send = await sqlconnect({
+                    query: "UPDATE `user` SET `level`= ? WHERE `username`= ?",
+                    values: ["petugas", req.body.username],
+                });
+                res.status(200).json({response:"Berhasil"})
+            }else{
+                res.status(401).json({response:"Unauthorized"})
+            }
+                }else{
+                    res.status(401).json({response:"Unauthorized"})
+                } 
+        }
         if (req.body.method === "logout") {
             const send = await sqlconnect({
                 query: "UPDATE `user` SET `token`= ? WHERE `username`= ?",

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Button } from '@mui/material';
-import { red } from '@mui/material/colors';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 
@@ -37,7 +36,7 @@ export  function Lelang() {
     <Card sx={{ maxWidth: 240}} className='mb-[1rem]'>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "indigo" }} aria-label="recipe">
             R
           </Avatar>
         }
@@ -68,7 +67,7 @@ export  function Lelang() {
     <Card sx={{ maxWidth: 240}} className='mb-[1rem]'>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "indigo" }} aria-label="recipe">
             R
           </Avatar>
         }
@@ -99,7 +98,7 @@ export  function Lelang() {
     <Card sx={{ maxWidth: 240}} className='mb-[1rem]'>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "indigo" }} aria-label="recipe">
             R
           </Avatar>
         }
@@ -127,7 +126,7 @@ export  function Lelang() {
     <Card sx={{ maxWidth: 240}} className='mb-[1rem]'>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "indigo" }} aria-label="recipe">
             R
           </Avatar>
         }
@@ -155,7 +154,7 @@ export  function Lelang() {
     <Card sx={{ maxWidth: 240}} className='mb-[1rem]'>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "indigo" }} aria-label="recipe">
             R
           </Avatar>
         }
@@ -183,7 +182,7 @@ export  function Lelang() {
     <Card sx={{ maxWidth: 240}} className='mb-[1rem]'>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "indigo" }} aria-label="recipe">
             R
           </Avatar>
         }
@@ -211,7 +210,7 @@ export  function Lelang() {
     <Card sx={{ maxWidth: 240}} className='mb-[1rem]'>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+          <Avatar sx={{ bgcolor: "indigo" }} aria-label="recipe">
             R
           </Avatar>
         }
