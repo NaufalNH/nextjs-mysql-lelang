@@ -306,7 +306,7 @@ function AlertLogout() {
         <DialogTitle>{"Peringatan"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Yakin Ingin keluar dari Dashboard
+            Yakin Ingin keluar dari Dashboard?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

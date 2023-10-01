@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button, Pagination as Pagination2, Avatar, Dialog, DialogContent, DialogContentText, DialogActions } from "@mui/material";
-import { ArrowUpward, Delete, Person, AdminPanelSettings } from "@mui/icons-material";
+import { ArrowUpward, Delete, Person, AdminPanelSettings, ArrowDownward } from "@mui/icons-material";
 import Link from "next/link";
 
 function Upgrade(params) {
@@ -17,7 +17,8 @@ const handleClik = async () => {
             data:{
                 method:"up",
                 username: params?.username,
-                token: params?.token
+                token: params?.token,
+                role:"petugas"
             }
         })
 if (send.data.response) {
@@ -41,6 +42,99 @@ if (send.data.response) {
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Naikkan <strong>{params?.nama}</strong> menjadi Petugas?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => {setOpen(false)}}>Batal</Button>
+          <Button onClick={handleClik}>Ya</Button>
+        </DialogActions>
+      </Dialog>
+      </>
+    )
+}
+function Downgrade(params) {
+const [open, setOpen] = useState(false);
+const router = useRouter();
+
+const handleClik = async () => {
+    try {
+       const send = await axios({
+            method:"POST",
+            url:"/api/user",
+            data:{
+                method:"up",
+                username: params?.username,
+                token: params?.token,
+                role:"masyarakat"
+            }
+        })
+if (send.data.response) {
+    setOpen(false)
+    router.reload();
+}
+    } catch (error) {
+        
+    }
+}
+    return(
+        <>
+        <Button color="warning" variant="contained" size="small" onClick={() => {setOpen(true)}}><ArrowDownward /></Button>
+        <Dialog
+        open={open}
+        // TransitionComponent={Transition}
+        keepMounted
+        onClose={() => {setOpen(false)}}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Turunkan <strong>{params?.nama}</strong> menjadi Masyarakat?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => {setOpen(false)}}>Batal</Button>
+          <Button onClick={handleClik}>Ya</Button>
+        </DialogActions>
+      </Dialog>
+      </>
+    )
+}
+function Deleteuser(params) {
+const [open, setOpen] = useState(false);
+const router = useRouter();
+
+const handleClik = async () => {
+    try {
+       const send = await axios({
+            method:"POST",
+            url:"/api/user",
+            data:{
+                method:"delete",
+                username: params?.username,
+                token: params?.token,
+            }
+        })
+if (send.data.response) {
+    setOpen(false)
+    router.reload();
+}
+    } catch (error) {
+        
+    }
+}
+    return(
+        <>
+        <Button color="error" variant="contained" size="small" onClick={() => {setOpen(true)}}><Delete /></Button>
+        <Dialog
+        open={open}
+        // TransitionComponent={Transition}
+        keepMounted
+        onClose={() => {setOpen(false)}}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Hapus <strong>{params?.nama}</strong> dari User?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -159,8 +253,10 @@ useEffect(() => {
                 </td>
                 <td class=" pl-6 py-4">
                     <div className="gap-2 flex">
-                   <Upgrade nama={data?.nama} token={user?.token} username={data?.username} />
-                    <Button color="error" variant="contained" size="small"><Delete /></Button>
+                        {data?.level === "petugas" ?
+                        <Downgrade nama={data?.nama} token={user?.token} username={data?.username} />
+                   : <Upgrade nama={data?.nama} token={user?.token} username={data?.username} />  }
+                    <Deleteuser nama={data?.nama} token={user?.token} username={data?.username} />
                     </div>
                 </td>
               </tr>        
