@@ -3,15 +3,18 @@ import { styled } from '@mui/material/styles';
 import { Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typography, Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
+import Barang from './barang';
 
 const Home = () => {
-
   const [user, setUser] = useState();
-const router = useRouter();
+  const [view,setView] = useState('');
+
+  const router = useRouter();
 useEffect(() => {
     const localuser = localStorage.getItem("user");
     const user = JSON.parse(localuser)
     setUser(user)
+  setView(Allview[user?.level])
     if (!user) {
         router.replace("/")
     }
@@ -20,12 +23,18 @@ useEffect(() => {
     return(
 <>
 <div className='text-center font-bold pb-4 text-xl'><h1>Welcome back, {user?.username} !</h1></div>
-<Lelang />
+{view}
 </>
     )
 }
 
 export default Home;
+
+const Allview = {
+  masyarakat : Lelang ,
+  admin : <Barang /> , 
+  petugas : Lelang 
+}
 
 export  function Lelang() {
 

@@ -13,11 +13,11 @@ import { useEffect, useState } from "react";
 const List1  = () => {
   return(
     <>
-<ListItemButton  component={Link} href="/main#input" sx={{color: "white"}}>
+<ListItemButton  component={Link} href="/main" sx={{color: "white"}}>
       <ListItemIcon>
         <LocalMall  sx={{color: "white"}}/>
       </ListItemIcon>
-      <ListItemText primary="Penawaran" />
+      <ListItemText primary="Pelelangan" />
     </ListItemButton>
     </>
   )
@@ -45,7 +45,13 @@ const List3  = () => {
 const List2  = () => {
   return(
     <>
-<ListItemButton  component={Link} href="/main" sx={{color: "white"}}>
+    <ListItemButton  component={Link} href="/main" sx={{color: "white"}}>
+      <ListItemIcon>
+        <LocalMall  sx={{color: "white"}}/>
+      </ListItemIcon>
+      <ListItemText primary="Pelelangan" />
+    </ListItemButton>
+<ListItemButton  component={Link} href="/main/barang" sx={{color: "white"}}>
       <ListItemIcon>
         <Assignment  sx={{color: "white"}}/>
       </ListItemIcon>
@@ -73,7 +79,6 @@ export const Listsidebar = () =>{
       setView(List[user?.level])
   },[])
 
-// const ViewList = List[user?.level]
 
   return(
   <React.Fragment>
@@ -81,7 +86,6 @@ export const Listsidebar = () =>{
     <ListSubheader sx={{backgroundColor: "#213555", color: "white"}} component="h4"  >
       Main Menu
     </ListSubheader>
-    {/* {user?.level === "admin" ? <List3 />  :  user?.level === "petugas" ? <List2 /> : <List1 /> } */}
     {View}
       </React.Fragment>
 )

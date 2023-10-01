@@ -31,7 +31,7 @@ if (send.data.response) {
 }
     return(
         <>
-        <Button color="success" variant="contained" size="small" onClick={() => {setOpen(true)}}><ArrowUpward /></Button>
+        <Button className="bg-green-600" color="success" variant="contained" size="small" onClick={() => {setOpen(true)}}><ArrowUpward /></Button>
         <Dialog
         open={open}
         // TransitionComponent={Transition}
@@ -78,7 +78,7 @@ if (send.data.response) {
 }
     return(
         <>
-        <Button color="warning" variant="contained" size="small" onClick={() => {setOpen(true)}}><ArrowDownward /></Button>
+        <Button color="warning" className="bg-orange-600" variant="contained" size="small" onClick={() => {setOpen(true)}}><ArrowDownward /></Button>
         <Dialog
         open={open}
         // TransitionComponent={Transition}
@@ -124,7 +124,7 @@ if (send.data.response) {
 }
     return(
         <>
-        <Button color="error" variant="contained" size="small" onClick={() => {setOpen(true)}}><Delete /></Button>
+        <Button color="error" className="bg-red-600" variant="contained" size="small" onClick={() => {setOpen(true)}}><Delete /></Button>
         <Dialog
         open={open}
         // TransitionComponent={Transition}
@@ -147,7 +147,7 @@ if (send.data.response) {
 }
 
 const Userpage =  () => {
-    const [user, setUser] = useState();
+    const [user, setUser] = useState({});
     const [data, setData] = useState([]);
 
     const router = useRouter();
@@ -188,7 +188,7 @@ useEffect(() => {
     return(
         <>
 
-<h1 className="text-xl font-bold">Pengaduan</h1>
+<h1 className="text-xl font-bold pb-2">Pendataan User</h1>
 <div class="relative overflow-x-auto shadow-md sm:rounded-md pt-2 ">
       <table class="w-full text-sm text-left text-gray-500 dark:border-gray-300 border-gray-300 border">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-50 dark:text-gray-700 border-b dark:border-gray-300 border-gray-300" >
