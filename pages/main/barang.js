@@ -49,13 +49,13 @@ if (send.data.response) {
 <div className="bg-white w-[auto] h-[auto] rounded-lg border-black p-[16px] flex flex-col gap-6">
   <h1 className="text-lg font-bold">Tambah Barang</h1>
   <div className="flex flex-row gap-3 items-center">
-  <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" ></input> 
+  <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder="Nama Barang" ></input> 
   </div>
   <div className="flex flex-row gap-3 items-center">
   <label>Harga Barang : </label> <input type="text" name="harga_awal" value={data?.harga_awal} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder="Rp. 3.000.000" ></input> 
   </div>
   <div className="flex flex-row gap-3 items-center mb-2">
-  <div className="gap-10 flex"><label>Deskripsi </label> <label>:</label></div> <textarea type="text" name="deskripsi" value={data?.deskripsi} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" ></textarea> 
+  <div className="gap-10 flex"><label>Deskripsi </label> <label>:</label></div> <textarea type="text" name="deskripsi" value={data?.deskripsi} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder="Deskripsi barang" ></textarea> 
   </div>
   <div className="flex items-center gap-3" style={{justifyContent:"right"}}>
   <Button variant="contained" color="error" className="bg-red-600" onClick={() => {setOpen(false)}}>Cancel</Button> 
@@ -66,60 +66,64 @@ if (send.data.response) {
       </>
     )
 }
-// function Downgrade(params) {
-// const [open, setOpen] = useState(false);
-// const router = useRouter();
+function Tambahlelang(params) {
+const [open, setOpen] = useState(false);
+const [data,setData] = useState({
+  token: params?.token,
+  method:"add",
+  nama_barang: params.nama,
+  harga_awal:params.harga_awal,
+  deskripsi:params.deskripsi,
+  id:params.id
+})
+const router = useRouter();
 
-// const handleClik = async () => {
-//     try {
-//        const send = await axios({
-//             method:"POST",
-//             url:"/api/user",
-//             data:{
-//                 method:"up",
-//                 username: params?.username,
-//                 token: params?.token,
-//                 role:"masyarakat"
-//             }
-//         })
-// if (send.data.response) {
-//     setOpen(false)
-//     router.reload();
-// }
-//     } catch (error) {
+const handleClik = async () => {
+    try {
+       const send = await axios({
+            method:"POST",
+            url:"/api/lelang",
+            data:data
+        })
+if (send.data.response) {
+    setOpen(false)
+    router.replace("/main");
+}
+    } catch (error) {
         
-//     }
-// }
-//     return(
-//         <>
-//         <Button color="warning" variant="contained" size="small" onClick={() => {setOpen(true)}}><ArrowDownward /></Button>
-//         <Modal
-//         open={open}
-//         onClose={() => {setOpen(false)}}
-//         aria-labelledby="modal-modal-title"
-//         aria-describedby="modal-modal-description"
-//         className="flex justify-center items-center"
-//       >
-// <div className="bg-white w-[auto] h-[auto] rounded-lg border-black p-[16px] flex flex-col gap-6">
-//   <h1 className="text-lg font-bold">Edit Barang</h1>
-//   <div className="flex flex-row gap-3 items-center">
-//   <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" ></input> 
-//   </div>
-//   <div className="flex flex-row gap-3 items-center">
-//   <label>Harga Barang : </label> <input type="text" name="harga_awal" value={data?.harga_awal} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" ></input> 
-//   </div>
-//   <div className="flex flex-row gap-3 items-center mb-2">
-//   <div className="gap-10 flex"><label>Deskripsi </label> <label>:</label></div> <textarea type="text" name="deskripsi" value={data?.deskripsi} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" ></textarea> 
-//   </div>
-//   <div className="flex items-center gap-3" style={{justifyContent:"right"}}>
-//   <Button variant="contained" color="error" className="bg-red-600" onClick={() => {setOpen(false)}}>Cancel</Button> 
-//   <Button variant="contained" className="bg-blue-600" onClick={handleClik}>Submit</Button> 
-//   </div>
-//   </div>
-//       </Modal>
-//       </>
-//     )
-// }
+    }
+}
+    return(
+        <>
+        <Button className="bg-green-600 mb-2 flex" color="success" variant="contained" size="medium" onClick={() => {setOpen(true)}}><Add /></Button>
+        <Modal
+        open={open}
+        onClose={() => {setOpen(false)}}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+        className="flex justify-center items-center"
+      >
+<div className="bg-white w-[auto] h-[auto] rounded-lg border-black p-[16px] flex flex-col gap-6">
+  <h1 className="text-lg font-bold">Tambahkan Ke Lelang</h1>
+  <div className="flex flex-row gap-3 items-center">
+  <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly  ></input> 
+  </div>
+  <div className="flex flex-row gap-3 items-center">
+  <label>Harga Barang : </label> <input type="text" name="harga_awal" value={data?.harga_awal}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly ></input> 
+  </div>
+  <div className="flex flex-row gap-3 items-center mb-2">
+  <div className="gap-10 flex"><label>Deskripsi </label> <label>:</label></div> <textarea type="text" name="deskripsi" value={data?.deskripsi}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly ></textarea> 
+  </div>
+  <div className="flex items-center gap-3" style={{justifyContent:"right"}}>
+  <Button variant="contained" color="error" className="bg-red-600" onClick={() => {setOpen(false)}}>Cancel</Button> 
+  <Button variant="contained" className="bg-blue-600" onClick={handleClik}>Submit</Button> 
+  </div>
+  </div>
+      </Modal>
+      </>
+    )
+}
+
 function Deletebarang(params) {
 const [open, setOpen] = useState(false);
 const router = useRouter();
@@ -271,9 +275,7 @@ useEffect(() => {
                 </td>
                 <td class=" pl-6 py-4">
                     <div className="gap-2 flex">
-
-                        {/* <Downgrade nama={data?.nama} token={user?.token} username={data?.username} /> */}
-                   
+                   {user?.level === "petugas" ? <Tambahlelang id={data?.id_barang} token={user?.token} nama={data?.nama_barang} harga_awal={data?.harga_awal} deskripsi={data?.deskripsi} /> : ""} 
                     <Deletebarang id={data?.id_barang} token={user?.token} nama={data?.nama_barang}/>
                     </div>
                 </td>
