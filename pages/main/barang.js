@@ -5,6 +5,7 @@ import { Button, Pagination as Pagination2, Avatar, Dialog, DialogContent, Dialo
 import { ArrowUpward, Delete, Person, AdminPanelSettings, ArrowDownward, Add, Close} from "@mui/icons-material";
 import Link from "next/link";
 import Image from "next/image";
+import { rupiah } from "./[id]";
 
 function Tambah(params) {
 const [open, setOpen] = useState(false);
@@ -51,8 +52,8 @@ if (send.data.response) {
   <div className="flex flex-row gap-3 items-center">
   <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder="Nama Barang" ></input> 
   </div>
-  <div className="flex flex-row gap-3 items-center">
-  <label>Harga Barang : </label> <input type="text" name="harga_awal" value={data?.harga_awal} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder="Rp. 3.000.000" ></input> 
+  <div className="flex flex-row gap-3">
+  <label>Harga Barang : </label> <div className="flex flex-col gap-3"> <input type="number" name="harga_awal" value={data?.harga_awal} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder={rupiah(data?.harga_awal)} ></input> <p className="text-xs text-gray-500">{rupiah(data?.harga_awal)}</p> </div>
   </div>
   <div className="flex flex-row gap-3 items-center mb-2">
   <div className="gap-10 flex"><label>Deskripsi </label> <label>:</label></div> <textarea type="text" name="deskripsi" value={data?.deskripsi} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder="Deskripsi barang" ></textarea> 
@@ -109,7 +110,7 @@ if (send.data.response) {
   <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly  ></input> 
   </div>
   <div className="flex flex-row gap-3 items-center">
-  <label>Harga Barang : </label> <input type="text" name="harga_awal" value={data?.harga_awal}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly ></input> 
+  <label>Harga Barang : </label> <input type="text" name="harga_awal" value={rupiah(data?.harga_awal)}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly ></input> 
   </div>
   <div className="flex flex-row gap-3 items-center mb-2">
   <div className="gap-10 flex"><label>Deskripsi </label> <label>:</label></div> <textarea type="text" name="deskripsi" value={data?.deskripsi}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly ></textarea> 
@@ -268,7 +269,7 @@ useEffect(() => {
                 })}
                 </td>
                 <td class="pl-6 py-4 text-green-700">
-                {data?.harga_awal}
+                {rupiah(data?.harga_awal)}
                 </td>
                 <td class="pl-6 py-4">
                 {data?.deskripsi.length > 20 ? String(data?.deskripsi).substring(0, 20) + " ..." : data?.deskripsi  }

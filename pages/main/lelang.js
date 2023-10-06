@@ -3,11 +3,12 @@ import { Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Typograp
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { rupiah } from './[id]';
 
 const Lelang = () => {
     const [user, setUser] = useState({});
     const [data, setData] = useState([]);
-console.log(data)
+
     const router = useRouter();
 useEffect(() => {
     const localuser = localStorage.getItem("user");
@@ -72,14 +73,14 @@ useEffect(() => {
                 })}</strong>
           </Typography>
             <Typography variant="body2" color="text.secondary">
-            Harga: <strong>{hh?.harga_awal}</strong>
+            Harga: <strong>{rupiah(hh?.harga_awal)}</strong>
           </Typography>
             <Typography variant="body2" color="text.secondary">
             Status: {hh?.status === "dibuka" ? <strong className='text-green-700'>Dibuka</strong> : <strong className='text-red-700'>Ditutup</strong> } 
           </Typography>
         </CardContent>
             <CardActions>
-        <Button size="small">Offer</Button>
+        <Button size="small" href={`/main/${hh?.id_lelang}`}>Offer</Button>
       </CardActions>
       </Card>
             ))}

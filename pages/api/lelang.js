@@ -44,6 +44,83 @@ export default async function handler(req , res){
                     res.status(401).json({response:"Unauthorized"})
                 } 
         }
+            if (req.body.method === "detail") {
+                if(req.body.token){
+            const select = await sqlconnect({
+                query: "SELECT `level` FROM user WHERE `token` = ?  ",
+                values: [req.body.token],
+            });
+            if (select[0]?.level === "petugas" || select[0]?.level === "masyarakat") {
+                const hasil = await sqlconnect({
+                    query: "SELECT * FROM `lelang` WHERE id_lelang = ? ",
+                    values: [req.body.id],
+                });
+                const hasilfix = hasil[0]
+                res.status(200).json({hasilfix})
+            }else{
+                res.status(401).json({response:"Unauthorized"})
+            }
+                }else{
+                    res.status(401).json({response:"Unauthorized"})
+                } 
+        }
+            if (req.body.method === "tawar") {
+                if(req.body.token){
+            const select = await sqlconnect({
+                query: "SELECT `level` FROM user WHERE `token` = ?  ",
+                values: [req.body.token],
+            });
+            if (select[0]?.level === "masyarakat") {
+                const send = await sqlconnect({
+                    query: "INSERT INTO `history` SET `id_lelang` = ? , `username` = ? , `penawaran` = ?  ",
+                    values: [req.body.id_lelang , req.body.username , req.body.penawaran],
+                });
+                res.status(200).json({response:"Berhasil memberikan penawaran"})
+            }else{
+                res.status(401).json({response:"Unauthorized"})
+            }
+                }else{
+                    res.status(401).json({response:"Unauthorized"})
+                } 
+        }
+            if (req.body.method === "tutup") {
+                if(req.body.token){
+            const select = await sqlconnect({
+                query: "SELECT `level` FROM user WHERE `token` = ?  ",
+                values: [req.body.token],
+            });
+            if (select[0]?.level === "petugas") {
+                const send = await sqlconnect({
+                    query: "UPDATE `lelang` SET `harga_akhir` = ? , `username` = ? , `status` = ? WHERE `id_lelang` = ?",
+                    values: [ req.body.harga_akhir , req.body.username , "ditutup" , req.body.id_lelang ],
+                });
+                res.status(200).json({response:"Berhasil menutup lelang!!!"})
+            }else{
+                res.status(401).json({response:"Unauthorized"})
+            }
+                }else{
+                    res.status(401).json({response:"Unauthorized"})
+                } 
+        }
+            if (req.body.method === "penawaran") {
+                if(req.body.token){
+            const select = await sqlconnect({
+                query: "SELECT `level` FROM user WHERE `token` = ?  ",
+                values: [req.body.token],
+            });
+            if (select[0]?.level === "masyarakat" || select[0]?.level === "petugas") {
+                const hasil = await sqlconnect({
+                    query: "SELECT * FROM `history` WHERE id_lelang = ? ORDER BY `penawaran` DESC",
+                    values: [req.body.id],
+                });
+                res.status(200).json({hasil})
+            }else{
+                res.status(401).json({response:"Unauthorized"})
+            }
+                }else{
+                    res.status(401).json({response:"Unauthorized"})
+                } 
+        }
         } else {
             res.status(401).send({response:"no such method",});
         }
