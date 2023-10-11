@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import Barang from './barang';
 import Lelang from './lelang';
+import { Laporan } from './barang';
 
 const Home = () => {
   const [user, setUser] = useState();
@@ -34,4 +35,14 @@ const Allview = {
   admin : <Barang /> , 
   petugas : <Lelang /> 
 }
+
+export const ComponentToPrint = React.forwardRef((props, ref) => {
+  return (
+    <div className='hidden'>
+    <div ref={ref}>
+      <Laporan />
+    </div>
+    </div>
+  );
+});
 

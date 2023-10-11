@@ -5,10 +5,11 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Assignment, AccountCircle, LocalMall } from '@mui/icons-material';
-import { Typography } from '@mui/material';
-import { useEffect, useState } from "react";
-
+import { Assignment, AccountCircle, LocalMall, Print } from '@mui/icons-material';
+import { useEffect, useState,useRef } from "react";
+import ReactToPrint from 'react-to-print';
+import { ComponentToPrint } from '../pages/main';
+import { Laporan } from '../pages/main/barang';
 
 const List1  = () => {
   return(
@@ -71,7 +72,8 @@ const List = {
 export const Listsidebar = () =>{
   const [user, setUser] = useState();
   const [View, setView] = useState('');
-  const router = useRouter()
+  const router = useRouter();
+  const componentRef = useRef();
   useEffect(() => {
       const localuser = localStorage.getItem("user");
       const user = JSON.parse(localuser)
@@ -87,6 +89,18 @@ export const Listsidebar = () =>{
       Main Menu
     </ListSubheader>
     {View}
+    {user?.level === "petugas" || user?.level === "admin" ? <div>
+      <ReactToPrint
+        trigger={() => <ListItemButton sx={{color: "white"}}>
+      <ListItemIcon>
+        <Print  sx={{color: "white"}}/>
+      </ListItemIcon>
+      <ListItemText primary="Generate Laporan" />
+    </ListItemButton>} // seng nang jero trigger ki tampilan click an ne, diganti button printmu
+        content={() => componentRef.current}
+      />
+      <ComponentToPrint ref={componentRef} />
+    </div> : ""}
       </React.Fragment>
 )
 }

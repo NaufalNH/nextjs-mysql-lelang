@@ -58,12 +58,19 @@ useEffect(() => {
           title={hh?.nama_barang}
           subheader={hh?.username_petugas}
         />
+        {!hh.image ? 
         <CardMedia
           component="img" 
           image="/assets/images/notfound.png"
           alt="No Image"
           sx={{height:140}}    
         />
+        : <CardMedia
+        component="img" 
+        image={"/upload/" + hh?.image}
+        alt="No Image"
+        sx={{height:140}}    
+      /> }
         <CardContent>
           <Typography variant="body2" color="text.secondary">
             Tanggal : <strong> {new Date(hh?.tanggal_lelang).toLocaleDateString("id-ID", {

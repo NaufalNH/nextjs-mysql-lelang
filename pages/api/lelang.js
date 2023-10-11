@@ -14,8 +14,8 @@ export default async function handler(req , res){
             });
             if (select[0]?.level === "petugas") {
                 const hasil = await sqlconnect({
-                    query: "INSERT INTO `lelang` SET `nama_barang` = ? , `harga_awal` = ? , `deskripsi` = ? , `username_petugas` = ? , `id_barang` = ? ",
-                    values: [req.body.nama_barang, req.body.harga_awal, req.body.deskripsi, select[0]?.username, req.body.id],
+                    query: "INSERT INTO `lelang` SET `nama_barang` = ? , `harga_awal` = ? , `deskripsi` = ? , `username_petugas` = ? , `id_barang` = ? , `image` = ? ",
+                    values: [req.body.nama_barang, req.body.harga_awal, req.body.deskripsi, select[0]?.username, req.body.id, req.body.image],
                 });
                 res.status(200).json({response:"Berhasil menambahkan ke lelang"})
             }else{
@@ -94,6 +94,10 @@ export default async function handler(req , res){
                     query: "UPDATE `lelang` SET `harga_akhir` = ? , `username` = ? , `status` = ? WHERE `id_lelang` = ?",
                     values: [ req.body.harga_akhir , req.body.username , "ditutup" , req.body.id_lelang ],
                 });
+                const laporan = await sqlconnect({
+                    query: "INSERT INTO `laporan` SET `nama_barang` = ? , `harga_awal` = ? , `harga_akhir` = ? , `username` = ? , `tanggal_lelang` = ? , `image` = ?",
+                    values: [ req.body.nama_barang , req.body.harga_awal , req.body.harga_akhir , req.body.username, req.body.tanggal_lelang, req.body.image ],
+                });
                 res.status(200).json({response:"Berhasil menutup lelang!!!"})
             }else{
                 res.status(401).json({response:"Unauthorized"})
@@ -121,6 +125,25 @@ export default async function handler(req , res){
                     res.status(401).json({response:"Unauthorized"})
                 } 
         }
+        if (req.body.method === "laporan") {
+            if(req.body.token){
+        const select = await sqlconnect({
+            query: "SELECT `level` FROM user WHERE `token` = ?  ",
+            values: [req.body.token],
+        });
+        if (select[0]?.level === "petugas" || select[0]?.level === "admin") {
+            const hasil = await sqlconnect({
+                query: "SELECT * FROM `laporan` ",
+                values: [],
+            });
+            res.status(200).json({hasil})
+        }else{
+            res.status(401).json({response:"Unauthorized"})
+        }
+            }else{
+                res.status(401).json({response:"Unauthorized"})
+            } 
+    }
         } else {
             res.status(401).send({response:"no such method",});
         }

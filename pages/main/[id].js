@@ -69,7 +69,11 @@ try {
             method:"tutup",
             harga_akhir:best?.penawaran,
             username:best?.username,
+            harga_awal:display?.harga_awal,
+            tanggal_lelang:display?.tanggal_lelang,
+            nama_barang:display?.nama_barang,
             token:user?.token,
+            image:display?.image,   
             id_lelang:id
         }
     })
@@ -93,7 +97,7 @@ try {
                 method:"detail",
                 id: id
             }
-        })
+        }) 
         const tawar = await axios({
             method:"POST",
             url:"/api/lelang",
@@ -118,7 +122,9 @@ try {
     return( 
 <>
 <div className="flex flex-row flex-wrap bg-white h-[32.2rem] w-[67rem] p-3 rounded-md shadow-md border-gray-300 border gap-5">
+    {!display.image ? 
 <Image src="/assets/images/notfound.png" width={350} height={600} className="object-cover h-[30.5rem] shadow-md rounded-sm"  />
+: <Image src={"/upload/" + display.image} width={350} height={600} className="object-cover h-[30.5rem] shadow-md rounded-sm"  /> }
 <div className="flex flex-col w-[40rem] px-[1rem] flex-wrap">
 <div className="flex flex-col w-full items-center mb-[3rem]">
 <h1 className="font-bold text-xl">{display?.nama_barang}</h1>
@@ -158,7 +164,7 @@ try {
   </div>
   </div> : user?.level === "petugas" ? <div className="flex flex-col gap-5 w-[29rem] ml-4">
     {penawaran.length !== 0 ? <div><h1 className="flex flex-row flex-wrap gap-2 font-bold">Tutup Lelang dengan harga tertinggi <p className="text-green-700">{rupiah(best?.penawaran)}</p>dari user <p className="text-green-700">{best?.username}</p>?</h1>
-<Button variant="contained" color="error" className="bg-red-600" onClick={handleTutup}>Tutup Lelang</Button></div> : ""} 
+<Button variant="contained" color="error" className="bg-red-600 w-full" onClick={handleTutup}>Tutup Lelang</Button></div> : ""} 
   </div>
    : ""}
 </div>

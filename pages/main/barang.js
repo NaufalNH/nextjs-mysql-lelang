@@ -11,32 +11,50 @@ function Tambah(params) {
 const [open, setOpen] = useState(false);
 const [data,setData] = useState({
   token: params?.token,
-  method:"tambah",
+//   method:"tambah",
   nama_barang:"",
   harga_awal:"",
   deskripsi:""
 })
+const [image, setImage] = useState(null);
+const [createObjectURL, setCreateObjectURL] = useState(null);
+console.log(createObjectURL)
 const router = useRouter();
 const handleChange = (event) => {
   const { name, value } = event.target;
+  if (name === "image") {
+    setImage(event.target.files[0]);
+    setCreateObjectURL(URL.createObjectURL(event.target.files[0]));
+  } else {
     setData({ ...data, [name]: value, token: params.token });
+  }
 };
 
-const handleClik = async () => {
+const handleClik = async (event) => {    
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append("file", image);
+    formData.append("token", data?.token);  
+    formData.append("nama_barang", data?.nama_barang);  
+    formData.append("harga_awal", data?.harga_awal);  
+    formData.append("deskripsi", data?.deskripsi);  
+    console.log(formData)
     try {
-       const send = await axios({
-            method:"POST",
-            url:"/api/barang",
-            data:data
-        })
-if (send.data.response) {
-    setOpen(false)
-    router.reload();
-}
+      const send = await axios({
+        method:"POST",
+        url:"/api/file",
+        data:formData,
+        headers:{"Content-Type" : "multipart/form-data"}
+      })
+      if (send.data.response) {
+        router.reload()
+      }
     } catch (error) {
-        
-    }
-}
+      console.log(error)
+    }   
+    
+  };
+
     return(
         <>
         <Button className="bg-blue-600 mb-2 flex" color="primary" variant="contained" size="medium" onClick={() => {setOpen(true)}}><Add /></Button>
@@ -51,6 +69,9 @@ if (send.data.response) {
   <h1 className="text-lg font-bold">Tambah Barang</h1>
   <div className="flex flex-row gap-3 items-center">
   <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder="Nama Barang" ></input> 
+  </div>
+  <div className="flex flex-row gap-3 mb-2">
+  <div className="gap-[61px] flex"><label>Image </label> <label>:</label></div> <div className="flex flex-col gap-3"> <input type="file" name="image" onChange={handleChange} ></input>{ createObjectURL === null ? <Image src="/assets/images/notfound.png" width={200} height={200} />: <Image src={createObjectURL} width={200} height={200} />}</div>
   </div>
   <div className="flex flex-row gap-3">
   <label>Harga Barang : </label> <div className="flex flex-col gap-3"> <input type="number" name="harga_awal" value={data?.harga_awal} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder={rupiah(data?.harga_awal)} ></input> <p className="text-xs text-gray-500">{rupiah(data?.harga_awal)}</p> </div>
@@ -75,6 +96,7 @@ const [data,setData] = useState({
   nama_barang: params.nama,
   harga_awal:params.harga_awal,
   deskripsi:params.deskripsi,
+  image:params.image,
   id:params.id
 })
 const router = useRouter();
@@ -108,6 +130,9 @@ if (send.data.response) {
   <h1 className="text-lg font-bold">Tambahkan Ke Lelang</h1>
   <div className="flex flex-row gap-3 items-center">
   <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly  ></input> 
+  </div>
+  <div className="flex flex-row gap-3 mb-2">
+  <div className="gap-[61px] flex"><label>Image </label> <label>:</label></div> <div className="flex flex-col gap-3">{ !params.image ? <Image src="/assets/images/notfound.png" width={200} height={200} />: <Image src={"/upload/" + params.image} width={200} height={200} />}</div>
   </div>
   <div className="flex flex-row gap-3 items-center">
   <label>Harga Barang : </label> <input type="text" name="harga_awal" value={rupiah(data?.harga_awal)}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly ></input> 
@@ -149,7 +174,7 @@ if (send.data.response) {
 }
     return(
         <>
-        <Button color="error" variant="contained" className="bg-red-600" size="small" onClick={() => {setOpen(true)}}><Delete /></Button>
+        <Button className="bg-red-600 mb-2 flex" color="error" variant="contained" size="medium" onClick={() => {setOpen(true)}}><Delete /></Button>
         <Dialog
         open={open}
         // TransitionComponent={Transition}
@@ -253,7 +278,7 @@ useEffect(() => {
                 {index + 1}
               </td>
               <td class="">
-             <Image src="/assets/images/notfound.png" width={90} height={50} />
+              { data?.image !== "" ? <Image src={"/upload/" + data?.image} width={90} height={50} /> : <Image src="/assets/images/notfound.png" width={90} height={50} />}
               </td>
               <td class="pl-6 py-4">
              {data?.nama_barang }
@@ -276,7 +301,7 @@ useEffect(() => {
                 </td>
                 <td class=" pl-6 py-4">
                     <div className="gap-2 flex">
-                   {user?.level === "petugas" ? <Tambahlelang id={data?.id_barang} token={user?.token} nama={data?.nama_barang} harga_awal={data?.harga_awal} deskripsi={data?.deskripsi} /> : ""} 
+                   {user?.level === "petugas" ? <Tambahlelang id={data?.id_barang} token={user?.token} nama={data?.nama_barang} harga_awal={data?.harga_awal} deskripsi={data?.deskripsi} image={data?.image} /> : ""} 
                     <Deletebarang id={data?.id_barang} token={user?.token} nama={data?.nama_barang}/>
                     </div>
                 </td>
@@ -291,10 +316,121 @@ useEffect(() => {
     <div className="dark:border-gray-300 border-gray-300 border-b border-r border-l flex flex-row py-[25px] px-[10px] items-center text-sm" style={{justifyContent:"right"}}>
       </div>
 </div>
-
-
 </>
     )
 }
+
+export const Laporan = () => {
+    const [user, setUser] = useState({});
+    const [data, setData] = useState([]);
+
+    const router = useRouter();
+  useEffect(() => {
+    const localuser = localStorage.getItem("user");
+    const user = JSON.parse(localuser)
+    setUser(user)
+    if (!user) {
+        router.replace("/")
+    }
+    if (user.level === "masyarakat") {
+        router.replace("/main")
+    }
+  },[]);
+  
+  useEffect(() => {
+    (async() => {
+    try {
+        // const get = await axios.get("/api/pengaduan")
+        if(user.level === "admin" || user.level === "petugas")
+        {
+          console.log("runnninf")
+            const get = await axios({
+                method:"POST",
+                url:"/api/lelang",
+                data: {
+                    token: user?.token,
+                    method: "laporan"
+                }
+            })
+            const getdata = get.data.hasil
+            setData(getdata)
+        }
+        } catch (error) {
+            console.log(error)
+        }
+    })();
+  },[user]);
+    return(
+  <>
+  <h1 className="text-xl font-bold mb-2">Laporan Lelang</h1>
+  <div class="relative overflow-x-auto shadow-md sm:rounded-md pt-2 p-5">
+        <table class="w-full text-sm text-left text-gray-500 dark:border-gray-300 border-gray-300 border">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-50 dark:text-gray-700 border-b dark:border-gray-300 border-gray-300" >
+              <tr>
+                  <th scope="col" class="pl-4 py-5 pr-3">
+                      Image
+                  </th>
+                  <th scope="col" class="py-5">
+                      Nama Barang
+                  </th>
+                  <th scope="col" class=" pl-6 py-5">
+                      Tanggal Lelang 
+                  </th>
+                  <th scope="col" class="pl-6 py-5">
+                      Pemenang
+                  </th>
+                  <th scope="col" class="pl-6 py-5">
+                      Harga Awal
+                  </th>
+                  <th scope="col" class="pl-6 py-5">
+                      Harga Akhir
+                  </th>
+              </tr>
+          </thead>
+          <tbody> 
+            <>
+          {data?.map((data, index)=> (
+            <>
+            <tr  key={data.id_pengaduan} class=" border-b  dark:border-gray-300 border-gray-300 dark:hover:bg-zinc-200">
+                <td class="pl-6 py-2">
+                {!data?.image ? <Image src="/assets/images/notfound.png" width={90} height={50} /> : <Image src={"/upload/" + data?.image} width={90} height={50} /> }
+                </td>
+                <td class="">
+               {data?.nama_barang}
+                </td>
+                <td class="pl-6 py-2">
+                {new Date(data?.tanggal_lelang).toLocaleDateString("id-ID", {
+                    day: "numeric",
+                    weekday: "long",
+                    month: "long",
+                    year: "numeric",
+                    // hour: '2-digit',
+                    // minute: "2-digit"
+                  })}
+                </td>
+                  <td class="pl-6 py-2 font-bold">
+                  {data?.username}
+                  </td>
+                  <td class="pl-6 py-2 text-green-700">
+                  {rupiah(data?.harga_awal)}
+                  </td>
+                  <td class="pl-6 py-2 text-green-700">
+                  {rupiah(data?.harga_akhir)}
+                  </td>
+                </tr>        
+            </>
+              ))}
+              </>
+          </tbody>
+          
+      
+      </table>
+      <div className="dark:border-gray-300 border-gray-300 border-b border-r border-l flex flex-row py-[25px] px-[10px] items-center text-sm" style={{justifyContent:"right"}}>
+        </div>
+  </div>
+  
+  </>
+    )
+  }
 
 export default Barang;
