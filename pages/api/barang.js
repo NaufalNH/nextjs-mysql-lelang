@@ -56,6 +56,14 @@ if (req.method === "POST") {
                 query: "DELETE FROM `barang` WHERE `id_barang`= ?",
                 values: [req.body.id],
             });
+            const send2 = await sqlconnect({
+                query: "DELETE FROM `lelang` WHERE `id_barang`= ?",
+                values: [req.body.id],
+            });
+            const send3 = await sqlconnect({
+                query: "DELETE FROM `history` WHERE `id_barang`= ?",
+                values: [req.body.id],
+            });
             res.status(200).json({response:"Berhasil Menghapus"})
         }else{
             res.status(401).json({response:"Unauthorized"})

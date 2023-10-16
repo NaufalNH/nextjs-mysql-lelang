@@ -19,7 +19,7 @@ const TamaGay = () => {
   const [display,setDisplay] = useState([]);
   const [penawaran,setPenawaran] = useState([]);
   const [best,setBest] = useState([]);
-  console.log(penawaran)
+//   console.log(penawaran)
 
   useEffect(() => {
     const localuser = localStorage.getItem("user");
@@ -38,12 +38,13 @@ const [tawar, setTawar] = useState({
     penawaran:"",
     id_lelang: "",
     method:"tawar",
-    token:""
+    token:"",
+    id_barang:""
 })
 
 const handleChange = (event) => {
     const { name, value,value2 } = event.target;
-      setTawar({ ...tawar, [name]: value, id_lelang: id , username:user?.username, token:user?.token});
+      setTawar({ ...tawar, [name]: value, id_lelang: id , username:user?.username, token:user?.token, id_barang:display?.id_barang});
   };
 
 const handleClick = async () => {
@@ -146,7 +147,7 @@ try {
 </div>
 </div>
 </div>
-{display?.status === "dibuka" ? <div className="flex flex-col flex-wrap bg-white h-[32.2rem] w-[67rem] p-3 rounded-md shadow-md border-gray-300 border gap-5 mt-[35px]">
+{display?.status === "dibuka" && <div className="flex flex-col flex-wrap bg-white h-[32.2rem] w-[67rem] p-3 rounded-md shadow-md border-gray-300 border gap-5 mt-[35px]">
 <h1 className="font-bold text-xl  items-center flex flex-col">Penawaran Harga</h1>
 <div className=" mt-[1rem] flex flex-row justify-center h-[24.5rem] gap-[3rem]">
     <div className="flex flex-row items-center">
@@ -160,7 +161,7 @@ try {
   </div>
   <div className="flex items-center gap-3">
   <Button variant="contained" color="error" className="bg-red-600" onClick={() => {setTawar({...tawar , penawaran:"", id:""})}}>Reset</Button> 
-  <Button variant="contained" className="bg-blue-600" onClick={handleClick} >Submit</Button> 
+  {tawar?.penawaran >= display?.harga_awal ? <Button variant="contained" className="bg-blue-600" onClick={handleClick} >Submit</Button> : <Button disabled variant="contained" className="bg-blue-600" >Submit</Button>}
   </div>
   </div> : user?.level === "petugas" ? <div className="flex flex-col gap-5 w-[29rem] ml-4">
     {penawaran.length !== 0 ? <div><h1 className="flex flex-row flex-wrap gap-2 font-bold">Tutup Lelang dengan harga tertinggi <p className="text-green-700">{rupiah(best?.penawaran)}</p>dari user <p className="text-green-700">{best?.username}</p>?</h1>
@@ -172,7 +173,7 @@ try {
 <h1 className="text-lg font-bold">Penawaran</h1>
 <div className="flex flex-col gap-5 w-[29rem] mr-4 h-[23.5rem] overflow-y-auto mt-2">
 {penawaran.map((hh) => (
-<div key={hh?.id_history} className="flex flex-row items-center gap-3">
+<div key={hh?.id_history} className="flex flex-row items-center gap-3"> 
  <Avatar sx={{ bgcolor: "indigo" }}>{String(hh?.username).charAt(0).toUpperCase()}</Avatar>
  <p><strong>{hh?.username} :</strong> <strong className="text-green-700">{rupiah(hh?.penawaran)}</strong></p>
  </div>
@@ -181,7 +182,7 @@ try {
 </div>
 </div>
 
-</div> : ""}
+</div>}
 </>
     )
 }

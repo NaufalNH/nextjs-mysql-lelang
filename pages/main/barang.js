@@ -2,8 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Button, Pagination as Pagination2, Avatar, Dialog, DialogContent, DialogContentText, DialogActions, Modal } from "@mui/material";
-import { ArrowUpward, Delete, Person, AdminPanelSettings, ArrowDownward, Add, Close} from "@mui/icons-material";
-import Link from "next/link";
+import {Delete, Add} from "@mui/icons-material";
 import Image from "next/image";
 import { rupiah } from "./[id]";
 
@@ -71,7 +70,7 @@ const handleClik = async (event) => {
   <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder="Nama Barang" ></input> 
   </div>
   <div className="flex flex-row gap-3 mb-2">
-  <div className="gap-[61px] flex"><label>Image </label> <label>:</label></div> <div className="flex flex-col gap-3"> <input type="file" name="image" onChange={handleChange} ></input>{ createObjectURL === null ? <Image src="/assets/images/notfound.png" width={200} height={200} />: <Image src={createObjectURL} width={200} height={200} />}</div>
+  <div className="gap-[61px] flex"><label>Image </label> <label>:</label></div> <div className="flex flex-col gap-3"> <input type="file" name="image" onChange={handleChange} ></input>{ createObjectURL === null ? <Image src="/assets/images/notfound.png" width={200} height={200} />: <Image src={createObjectURL} width={200} height={200} className="object-contain max-h-[10rem]" />}</div>
   </div>
   <div className="flex flex-row gap-3">
   <label>Harga Barang : </label> <div className="flex flex-col gap-3"> <input type="number" name="harga_awal" value={data?.harga_awal} onChange={handleChange} className="border-black bg-gray-200 rounded-md p-[8px]" placeholder={rupiah(data?.harga_awal)} ></input> <p className="text-xs text-gray-500">{rupiah(data?.harga_awal)}</p> </div>
@@ -132,7 +131,7 @@ if (send.data.response) {
   <label>Nama Barang : </label> <input type="text" name="nama_barang" value={data?.nama_barang}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly  ></input> 
   </div>
   <div className="flex flex-row gap-3 mb-2">
-  <div className="gap-[61px] flex"><label>Image </label> <label>:</label></div> <div className="flex flex-col gap-3">{ !params.image ? <Image src="/assets/images/notfound.png" width={200} height={200} />: <Image src={"/upload/" + params.image} width={200} height={200} />}</div>
+  <div className="gap-[61px] flex"><label>Image </label> <label>:</label></div> <div className="flex flex-col gap-3">{ !params.image ? <Image src="/assets/images/notfound.png" width={200} height={200} />: <Image src={"/upload/" + params.image} width={200} height={200} className="object-contain max-h-[10rem]" />}</div>
   </div>
   <div className="flex flex-row gap-3 items-center">
   <label>Harga Barang : </label> <input type="text" name="harga_awal" value={rupiah(data?.harga_awal)}  className="border-black bg-gray-200 rounded-md p-[8px]" readOnly ></input> 
@@ -278,7 +277,7 @@ useEffect(() => {
                 {index + 1}
               </td>
               <td class="">
-              { data?.image !== "" ? <Image src={"/upload/" + data?.image} width={90} height={50} /> : <Image src="/assets/images/notfound.png" width={90} height={50} />}
+              { data?.image !== "" ? <Image src={"/upload/" + data?.image} width={90} height={50} className="object-cover max-h-[60px]" /> : <Image src="/assets/images/notfound.png" width={90} height={50} />}
               </td>
               <td class="pl-6 py-4">
              {data?.nama_barang }
@@ -301,7 +300,7 @@ useEffect(() => {
                 </td>
                 <td class=" pl-6 py-4">
                     <div className="gap-2 flex">
-                   {user?.level === "petugas" ? <Tambahlelang id={data?.id_barang} token={user?.token} nama={data?.nama_barang} harga_awal={data?.harga_awal} deskripsi={data?.deskripsi} image={data?.image} /> : ""} 
+                   {user?.level === "petugas" && data?.status === "ada" ? <Tambahlelang id={data?.id_barang} token={user?.token} nama={data?.nama_barang} harga_awal={data?.harga_awal} deskripsi={data?.deskripsi} image={data?.image} status={data?.status} /> : user?.level === "petugas" ? <Button disabled className="bg-green-600 mb-2 flex" color="success" variant="contained" size="medium"><Add /></Button> : ""} 
                     <Deletebarang id={data?.id_barang} token={user?.token} nama={data?.nama_barang}/>
                     </div>
                 </td>
@@ -393,7 +392,7 @@ export const Laporan = () => {
             <>
             <tr  key={data.id_pengaduan} class=" border-b  dark:border-gray-300 border-gray-300 dark:hover:bg-zinc-200">
                 <td class="pl-6 py-2">
-                {!data?.image ? <Image src="/assets/images/notfound.png" width={90} height={50} /> : <Image src={"/upload/" + data?.image} width={90} height={50} /> }
+                {!data?.image ? <Image src="/assets/images/notfound.png" width={90} height={50} /> : <Image src={"/upload/" + data?.image} width={90} height={50} className="object-cover max-h-[60px]" /> }
                 </td>
                 <td class="">
                {data?.nama_barang}

@@ -89,9 +89,9 @@ export const Listsidebar = () =>{
       Main Menu
     </ListSubheader>
     {View}
-    {user?.level === "petugas" || user?.level === "admin" ? <div>
+    {(user?.level === "petugas" || user?.level === "admin") && <div>
       <ReactToPrint
-        trigger={() => <ListItemButton sx={{color: "white"}}>
+        trigger={() => <ListItemButton sx={{color: "white"}}> 
       <ListItemIcon>
         <Print  sx={{color: "white"}}/>
       </ListItemIcon>
@@ -100,7 +100,7 @@ export const Listsidebar = () =>{
         content={() => componentRef.current}
       />
       <ComponentToPrint ref={componentRef} />
-    </div> : ""}
+    </div>}
       </React.Fragment>
 )
 }

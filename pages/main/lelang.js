@@ -69,7 +69,7 @@ useEffect(() => {
         component="img" 
         image={"/upload/" + hh?.image}
         alt="No Image"
-        sx={{height:140}}    
+        sx={{height:140 , width:211}}    
       /> }
         <CardContent>
           <Typography variant="body2" color="text.secondary">

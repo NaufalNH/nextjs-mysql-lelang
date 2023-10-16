@@ -17,6 +17,10 @@ export default async function handler(req , res){
                     query: "INSERT INTO `lelang` SET `nama_barang` = ? , `harga_awal` = ? , `deskripsi` = ? , `username_petugas` = ? , `id_barang` = ? , `image` = ? ",
                     values: [req.body.nama_barang, req.body.harga_awal, req.body.deskripsi, select[0]?.username, req.body.id, req.body.image],
                 });
+                const send2 = await sqlconnect({
+                    query: "UPDATE `barang` SET `status` = ? WHERE `id_barang` = ? ",
+                    values: ["lelang" , req.body.id],
+                });
                 res.status(200).json({response:"Berhasil menambahkan ke lelang"})
             }else{
                 res.status(401).json({response:"Unauthorized"})
@@ -72,8 +76,8 @@ export default async function handler(req , res){
             });
             if (select[0]?.level === "masyarakat") {
                 const send = await sqlconnect({
-                    query: "INSERT INTO `history` SET `id_lelang` = ? , `username` = ? , `penawaran` = ?  ",
-                    values: [req.body.id_lelang , req.body.username , req.body.penawaran],
+                    query: "INSERT INTO `history` SET `id_lelang` = ? , `username` = ? , `penawaran` = ? , `id_barang` = ? ",
+                    values: [req.body.id_lelang , req.body.username , req.body.penawaran, req.body.id_barang],
                 });
                 res.status(200).json({response:"Berhasil memberikan penawaran"})
             }else{
