@@ -48,6 +48,25 @@ export default async function handler(req , res){
                     res.status(401).json({response:"Unauthorized"})
                 } 
         }
+            if (req.body.method === "history") {
+                if(req.body.token){
+            const select = await sqlconnect({
+                query: "SELECT `level`, `username` FROM user WHERE `token` = ?  ",
+                values: [req.body.token],
+            });
+            if (select[0]?.level === "masyarakat") {
+                const hasil = await sqlconnect({
+                    query: "SELECT * FROM `lelang` WHERE `username` = ? ",
+                    values: [select[0]?.username],
+                });
+                res.status(200).json({hasil})
+            }else{
+                res.status(401).json({response:"Unauthorized"})
+            }
+                }else{
+                    res.status(401).json({response:"Unauthorized"})
+                } 
+        }
             if (req.body.method === "detail") {
                 if(req.body.token){
             const select = await sqlconnect({

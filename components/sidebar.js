@@ -5,7 +5,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Assignment, AccountCircle, LocalMall, Print } from '@mui/icons-material';
+import { Assignment, AccountCircle, LocalMall, Print, EmojiEvents } from '@mui/icons-material';
 import { useEffect, useState,useRef } from "react";
 import ReactToPrint from 'react-to-print';
 import { ComponentToPrint } from '../pages/main';
@@ -19,6 +19,12 @@ const List1  = () => {
         <LocalMall  sx={{color: "white"}}/>
       </ListItemIcon>
       <ListItemText primary="Pelelangan" />
+    </ListItemButton>
+<ListItemButton  component={Link} href="/main/history" sx={{color: "white"}}>
+      <ListItemIcon>
+        <EmojiEvents sx={{color: "white"}}/>
+      </ListItemIcon>
+      <ListItemText primary="History Menang" />
     </ListItemButton>
     </>
   )
